@@ -58,9 +58,5 @@ report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json
 #ssl keys
 cert
 
-#package
-/package.json
-/package-lock.json
-
 #history
 .history/
