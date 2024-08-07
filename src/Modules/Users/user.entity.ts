@@ -1,11 +1,16 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import {
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn,
+} from 'typeorm';
 import { UserRole } from '../Commons/Enum/Enums';
 
 @Entity({
-    name: 'users'
+  name: 'users',
 })
 export class UserEntity {
-  @PrimaryGeneratedColumn("uuid")
+  @PrimaryGeneratedColumn('uuid')
   id: string;
 
   @Column()
@@ -14,27 +19,27 @@ export class UserEntity {
   @Column()
   password: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   email: string;
 
   @Column({
     name: 'phone_number',
-    nullable: true
+    nullable: true,
   })
   phoneNumber: string;
 
-  @Column({nullable: true})
+  @Column({ nullable: true })
   address: string;
 
   @Column({
-    type: "enum",
+    type: 'enum',
     enum: UserRole,
     default: UserRole.USER,
   })
   roles: string;
 
   @CreateDateColumn({
-    name: 'created_at'
-  })   
+    name: 'created_at',
+  })
   createdAt: Date;
 }

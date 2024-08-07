@@ -7,18 +7,20 @@ import { LoggerMiddleware } from './Middlewares/Logging.middleware';
 
 async function bootstrap() {
   const httpsOptions = {
-    key: fs.readFileSync(path.join(__dirname, '..', 'cert', 'key.pem')),
-    cert: fs.readFileSync(path.join(__dirname, '..', 'cert', 'cert.pem')),
+    key: fs.readFileSync(path.join('cert/key.pem')),
+    cert: fs.readFileSync(path.join('cert/cert.pem')),
   };
   const app = await NestFactory.create(AppModule, { httpsOptions });
-  app.useGlobalPipes(new ValidationPipe({
-    transform: true, // Transform payload objects to match the DTO structure
-    whitelist: true, // Strip away properties not defined in the DTO
-    forbidNonWhitelisted: true, // Throw an exception when unknown properties are detected
-    errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
-  }));
+  app.useGlobalPipes(
+    new ValidationPipe({
+      transform: true, // Transform payload objects to match the DTO structure
+      whitelist: true, // Strip away properties not defined in the DTO
+      forbidNonWhitelisted: true, // Throw an exception when unknown properties are detected
+      errorHttpStatusCode: HttpStatus.UNPROCESSABLE_ENTITY,
+    }),
+  );
   app.use(new LoggerMiddleware().use);
-  console.log(`Server is running at https://localhost:${process.env.PORT}`)
+  console.log(`Server is running at https://localhost:${process.env.PORT}`);
   await app.listen(process.env.PORT);
 }
 bootstrap();
