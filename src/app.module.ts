@@ -18,8 +18,9 @@ import { UserModule } from './Modules/Users/user.module';
         username: configService.get<string>('DATABASE_USERNAME'),
         password: configService.get<string>('DATABASE_PASSWORD'),
         database: configService.get<string>('DATABASE_NAME'),
-        entities: ['/src/Modules/**/*.entity{.ts,.js}'],
+        entities: [__dirname + '/src/Modules/**/*.entity{.ts,.js}'],
         synchronize: false,
+        autoLoadEntities: true,
       }),
     }),
 

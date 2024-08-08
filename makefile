@@ -1,8 +1,8 @@
 
-autogenerate:
+auto:
 	@read -p "Enter migration name: " name; \
 	npm run migration:generate -- database/migrations/$$name
-run:
+up:
 	npm run migration:run
-revert:
-	npm run migration:revert	
+down:
+	npm run migration:revert

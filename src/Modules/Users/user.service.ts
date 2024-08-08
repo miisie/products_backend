@@ -1,7 +1,7 @@
 import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserRegisterDto } from './dtos/user-register.dto';
 import { UserRepository } from './user.repository';
-import { ResponseFormat } from '../Commons/Responses/Response';
+import { ResponseFormat } from '../../Commons/Responses/Response';
 
 @Injectable()
 export class UserService {

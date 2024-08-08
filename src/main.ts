@@ -20,7 +20,8 @@ async function bootstrap() {
     }),
   );
   app.use(new LoggerMiddleware().use);
-  console.log(`Server is running at https://localhost:${process.env.PORT}`);
+
   await app.listen(process.env.PORT);
+  console.log(`Server is running at https://localhost:${process.env.PORT}`);
 }
 bootstrap();

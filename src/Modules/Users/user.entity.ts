@@ -4,7 +4,7 @@ import {
   PrimaryGeneratedColumn,
   CreateDateColumn,
 } from 'typeorm';
-import { UserRole } from '../Commons/Enum/Enums';
+import { UserRole } from '../../Commons/Enum/Enums';
 
 @Entity({
   name: 'users',

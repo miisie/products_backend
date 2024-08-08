@@ -9,8 +9,8 @@ const AppDataSource = new DataSource({
   username: process.env.DATABASE_USERNAME,
   password: process.env.DATABASE_PASSWORD,
   database: process.env.DATABASE_NAME,
-  entities: ['src/Modules/**/*.entity{.ts,.js}'],
-  migrations: ['database/migrations/*.ts'],
+  entities: [__dirname + '/src/Modules/**/*.entity{.ts,.js}'],
+  migrations: [__dirname + '/database/migrations/*.ts'],
   synchronize: false,
 });
 
