@@ -2,12 +2,15 @@ import { Module } from '@nestjs/common';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './Modules/Users/user.module';
+import { AuthModule } from './Modules/Auth/auth.module';
+import { RedisModule } from './Modules/Redis/redis.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
     }),
 
+    RedisModule,
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -25,6 +28,7 @@ import { UserModule } from './Modules/Users/user.module';
     }),
 
     UserModule,
+    AuthModule,
   ],
   controllers: [],
   providers: [],

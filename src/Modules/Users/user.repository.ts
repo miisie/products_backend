@@ -8,10 +8,18 @@ export class UserRepository extends Repository<UserEntity> {
     super(UserEntity, dataSource.createEntityManager());
   }
 
-  async getUserByName(username: string) {
+  async getUserByName(username: string): Promise<UserEntity> {
     return await this.findOne({
       where: {
         username: username,
+      },
+    });
+  }
+
+  async getUserById(id: string): Promise<UserEntity> {
+    return await this.findOne({
+      where: {
+        id,
       },
     });
   }
