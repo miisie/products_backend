@@ -8,7 +8,16 @@ export class UserRepository extends Repository<UserEntity> {
     super(UserEntity, dataSource.createEntityManager());
   }
 
-  async getUserByName(username: string): Promise<UserEntity> {
+  async getUserByNameOrEmail(username: string, email?: string): Promise<UserEntity> {
+    if(email) {
+      return await this.findOne({
+        where: [
+          {username: username},
+          {email: email},
+        ],
+      });
+    }
+
     return await this.findOne({
       where: {
         username: username,

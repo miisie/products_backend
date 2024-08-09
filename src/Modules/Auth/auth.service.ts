@@ -1,9 +1,10 @@
-import { Inject, Injectable, UnauthorizedException } from '@nestjs/common';
+import { HttpStatus, Inject, Injectable, UnauthorizedException } from '@nestjs/common';
 import { UserService } from '../Users/user.service';
 import { JwtService } from '@nestjs/jwt';
 import { jwtConstants, REDIS_CLIENT } from '../../Commons/Constants/constants';
 import { UserLoginDto } from './dtos/user-login.dto';
 import { RedisClientType } from 'redis';
+import { SuccessResponseDto } from '../../Commons/Responses/Swagger-response-dtos/Common/success-response.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,7 +15,7 @@ export class AuthService {
   ) {}
 
   async validateUser(username: string, password: string) {
-    const user = await this.userService.getUserByName(username);
+    const user = await this.userService.getUserByNameOrEmail(username);
     if (user && user.password === password) {
       return {
         id: user.id,
@@ -39,16 +40,18 @@ export class AuthService {
     );
 
     if (!user)
-      throw new UnauthorizedException('Incorrect Username or Password');
+      throw new UnauthorizedException(['Incorrect Username or Password']);
 
     const payload = { username: user.username, id: user.id , role: user.role};
     const tokens = await this.createTokens(payload);
-    return {
+    const data = {
       username: user.username,
       id: user.id,
       role: user.role,
       ...tokens,
     }
+
+    return new SuccessResponseDto(data, ['Login successfully'], HttpStatus.OK)
   }
 
   async refreshTokens(refreshToken: string) {
@@ -57,10 +60,11 @@ export class AuthService {
         secret: jwtConstants.secret,
       });
 
-      const user = await this.userService.getUserByName(payload.username);
+      const user = await this.userService.getUserByNameOrEmail(payload.username);
       if (!user) throw new UnauthorizedException('Invalid Token Payload');
       const { iat, exp, ...newPayload } = payload;
-      return this.createTokens(newPayload);
+      const tokens = this.createTokens(newPayload);
+      return new SuccessResponseDto(tokens, ['Successfully create new tokens'], HttpStatus.OK)
     } catch (e) {
       throw new UnauthorizedException('Invalid Refresh Token');
     }

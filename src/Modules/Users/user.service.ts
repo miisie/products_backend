@@ -1,27 +1,37 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
+import { BadRequestException, HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserRegisterDto } from './dtos/user-register.dto';
 import { UserRepository } from './user.repository';
-import { ResponseFormat } from '../../Commons/Responses/Response';
 import { UserEntity } from './user.entity';
+import { SuccessResponseDto } from '../../Commons/Responses/Swagger-response-dtos/Common/success-response.dto';
 
 @Injectable()
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
   async register(userRegisterDto: UserRegisterDto) {
-    const user = await this.userRepository.getUserByName(
+    let user: UserEntity;
+    if(userRegisterDto.email) {
+      user = await this.userRepository.getUserByNameOrEmail(
+        userRegisterDto.username,
+        userRegisterDto.email,
+      );
+    }
+    user = await this.userRepository.getUserByNameOrEmail(
       userRegisterDto.username,
     );
     if (user) {
-      throw new HttpException('User already exists', HttpStatus.BAD_REQUEST);
+      throw new BadRequestException(['Username or Email already exists']);
     }
     const newUser = this.userRepository.create(userRegisterDto);
     await this.userRepository.save(newUser);
-    return ResponseFormat(201, ['Create User Success']);
+    return new SuccessResponseDto({}, ['Create User Success'], HttpStatus.CREATED);
   }
 
-  async getUserByName(username: string): Promise<UserEntity> {
-    return await this.userRepository.getUserByName(username);
+  async getUserByNameOrEmail(username: string, email?: string): Promise<UserEntity> {
+    if (email){
+      return await this.userRepository.getUserByNameOrEmail(username,email);
+    }
+    return await this.userRepository.getUserByNameOrEmail(username);
   }
 
   async getUserInfo(userId: string) {
