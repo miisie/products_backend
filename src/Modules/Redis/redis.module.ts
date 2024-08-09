@@ -22,9 +22,14 @@ dotenv.config();
         });
 
         // Wait for the client to connect
-        await client.connect();
+        try {
+          await client.connect();
+          console.log('Connected to Redis!')
+          return client;
+        } catch {
+          console.log('Failed to connect Redis')
+        }
 
-        return client;
       },
     },
   ],

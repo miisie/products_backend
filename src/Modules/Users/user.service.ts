@@ -1,4 +1,4 @@
-import { HttpException, HttpStatus, Inject, Injectable } from '@nestjs/common';
+import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
 import { UserRegisterDto } from './dtos/user-register.dto';
 import { UserRepository } from './user.repository';
 import { ResponseFormat } from '../../Commons/Responses/Response';
@@ -6,9 +6,7 @@ import { UserEntity } from './user.entity';
 
 @Injectable()
 export class UserService {
-  constructor(
-    private readonly userRepository: UserRepository,
-  ) {}
+  constructor(private readonly userRepository: UserRepository) {}
 
   async register(userRegisterDto: UserRegisterDto) {
     const user = await this.userRepository.getUserByName(
@@ -28,7 +26,7 @@ export class UserService {
 
   async getUserInfo(userId: string) {
     const user = await this.userRepository.getUserById(userId);
-    const {id, createdAt, ...info} = user;
+    const { id, createdAt, ...info } = user;
     return info;
   }
 }

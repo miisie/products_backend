@@ -4,6 +4,9 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { UserModule } from './Modules/Users/user.module';
 import { AuthModule } from './Modules/Auth/auth.module';
 import { RedisModule } from './Modules/Redis/redis.module';
+import { RolesGuard } from './Modules/Auth/roles.guard';
+import { APP_GUARD } from '@nestjs/core';
+import { JwtAuthGuard } from './Modules/Auth/jwt-auth.guard';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -27,10 +30,19 @@ import { RedisModule } from './Modules/Redis/redis.module';
       }),
     }),
 
-    UserModule,
     AuthModule,
+    UserModule,
   ],
   controllers: [],
-  providers: [],
+  providers: [
+    {
+      provide: APP_GUARD,
+      useClass: JwtAuthGuard,
+    },
+    {
+      provide: APP_GUARD,
+      useClass: RolesGuard,
+    },
+  ],
 })
 export class AppModule {}
