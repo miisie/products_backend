@@ -7,7 +7,7 @@ $ npm install
 
 ```bash
 # Create folder cert
-$ mkdir -p cert
+$ mkdir cert
 
 # Generate a private key
 $ openssl genrsa -out ./cert/key.pem
