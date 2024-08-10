@@ -1,4 +1,4 @@
-import { Body, Controller, HttpStatus, Post } from "@nestjs/common";
+import { Body, Controller, HttpStatus, Post, Res } from "@nestjs/common";
 import { UserLoginDto } from "./dtos/user-login.dto";
 import { AuthService } from "./auth.service";
 import { RefreshTokensDto } from "./dtos/refresh-tokens.dto";
@@ -9,6 +9,8 @@ import { LoginFailDto } from "../../Commons/Responses/Swagger-response-dtos/Auth
 import { InvalidRefreshDto } from "../../Commons/Responses/Swagger-response-dtos/Auth/invalid-refresh-token.dto";
 import { SuccessRefreshTokensDto } from "../../Commons/Responses/Swagger-response-dtos/Auth/success-refresh-tokens.dto";
 import { InvalidInputDto } from "../../Commons/Responses/Swagger-response-dtos/Common/invalid-input.dto";
+import { Response } from 'express';
+
 @ApiTags('Auth')
 @Controller('auth')
 export default class AuthController {
@@ -21,8 +23,9 @@ export default class AuthController {
     @ApiUnauthorizedResponse({type: LoginFailDto})
     @ApiResponse({status: HttpStatus.UNPROCESSABLE_ENTITY, type: InvalidInputDto})
     @ApiOkResponse({type: LoginSuccessDto})
-    async login(@Body() userLoginDto: UserLoginDto) {
-        return await this.authService.login(userLoginDto);
+    async login(@Res() res: Response, @Body() userLoginDto: UserLoginDto) {
+        const data = await this.authService.login(userLoginDto);
+        return res.status(HttpStatus.OK).json(data);
     }
 
     @Public()
@@ -30,7 +33,8 @@ export default class AuthController {
     @ApiResponse({status: HttpStatus.UNPROCESSABLE_ENTITY, type: InvalidInputDto})
     @ApiOkResponse({type: SuccessRefreshTokensDto})
     @Post('refresh-tokens')
-    async refreshTokens(@Body() refreshTokensDto: RefreshTokensDto) {
-        return await this.authService.refreshTokens(refreshTokensDto.refreshToken);
+    async refreshTokens(@Res() res: Response, @Body() refreshTokensDto: RefreshTokensDto) {
+        const data = await this.authService.refreshTokens(refreshTokensDto.refreshToken);
+        return res.status(HttpStatus.OK).json(data);
     }
 }
