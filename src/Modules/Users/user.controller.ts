@@ -18,14 +18,6 @@ export class UserController {
   constructor(private readonly usersService: UserService) {}
 
   @Public()
-  @ApiOkResponse()
-  @Post('health-check')
-  async healthCheck(@Res() res: Response) {
-    const data = await this.usersService.healthCheck();
-    return res.status(HttpStatus.OK).json(data);
-  }
-
-  @Public()
   @ApiResponse({status: HttpStatus.BAD_REQUEST, type: RegisterFailDto})
   @ApiResponse({status: HttpStatus.UNPROCESSABLE_ENTITY, type: InvalidInputDto})
   @ApiResponse({status: HttpStatus.CREATED, type: RegisterSuccessDto})
