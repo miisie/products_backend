@@ -27,6 +27,9 @@ import { JwtAuthGuard } from './Modules/Auth/jwt-auth.guard';
         entities: [__dirname + '/src/Modules/**/*.entity{.ts,.js}'],
         synchronize: false,
         autoLoadEntities: true,
+        ssl: {
+          rejectUnauthorized: false,
+        },
       }),
     }),
 

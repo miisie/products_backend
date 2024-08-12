@@ -12,6 +12,9 @@ const AppDataSource = new DataSource({
   entities: [__dirname + '/src/Modules/**/*.entity{.ts,.js}'],
   migrations: [__dirname + '/database/migrations/*.ts'],
   synchronize: false,
+  ssl: {
+    rejectUnauthorized: false,
+  },
 });
 
 export default AppDataSource;
