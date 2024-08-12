@@ -34,7 +34,5 @@ async function bootstrap() {
   app.use(new LoggerMiddleware().use);
 
   await app.listen(process.env.PORT);
-  console.log(`Server is running at https://localhost:${process.env.PORT}`);
-  console.log(`Swagger is running at https://localhost:${process.env.PORT}/swagger`)
 }
 bootstrap();

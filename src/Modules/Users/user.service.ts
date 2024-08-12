@@ -8,6 +8,10 @@ import { SuccessResponseDto } from '../../Commons/Responses/Swagger-response-dto
 export class UserService {
   constructor(private readonly userRepository: UserRepository) {}
 
+  async healthCheck() {
+    return new SuccessResponseDto({}, ['Health Check Successfully'], HttpStatus.OK);
+  }
+
   async register(userRegisterDto: UserRegisterDto) {
     let user: UserEntity;
     if(userRegisterDto.email) {
