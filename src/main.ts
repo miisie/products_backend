@@ -1,18 +1,12 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
-import * as fs from 'fs';
-import * as path from 'path';
 import { HttpStatus, ValidationPipe } from '@nestjs/common';
 import { LoggerMiddleware } from './Middlewares/Logging.middleware';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
 
 
 async function bootstrap() {
-  const httpsOptions = {
-    key: fs.readFileSync(path.join('cert/key.pem')),
-    cert: fs.readFileSync(path.join('cert/cert.pem')),
-  };
-  const app = await NestFactory.create(AppModule, { httpsOptions });
+  const app = await NestFactory.create(AppModule);
 
   app.useGlobalPipes(
     new ValidationPipe({
