@@ -63,7 +63,7 @@ export class AuthService {
       const user = await this.userService.getUserByNameOrEmail(payload.username);
       if (!user) throw new UnauthorizedException('Invalid Token Payload');
       const { iat, exp, ...newPayload } = payload;
-      const tokens = this.createTokens(newPayload);
+      const tokens = await this.createTokens(newPayload);
       return new SuccessResponseDto(tokens, ['Successfully create new tokens'], HttpStatus.OK)
     } catch (e) {
       throw new UnauthorizedException('Invalid Refresh Token');
