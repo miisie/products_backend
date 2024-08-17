@@ -60,3 +60,6 @@ cert
 
 #history
 .history/
+
+#seed
+database/seeds/Admin/*.seed.ts

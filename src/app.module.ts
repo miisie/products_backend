@@ -7,6 +7,7 @@ import { RedisModule } from './Modules/Redis/redis.module';
 import { RolesGuard } from './Modules/Auth/roles.guard';
 import { APP_GUARD } from '@nestjs/core';
 import { JwtAuthGuard } from './Modules/Auth/jwt-auth.guard';
+import { ProductModule } from './Modules/Products/product.module';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -35,6 +36,7 @@ import { JwtAuthGuard } from './Modules/Auth/jwt-auth.guard';
 
     AuthModule,
     UserModule,
+    ProductModule,
   ],
   controllers: [],
   providers: [

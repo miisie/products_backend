@@ -19,7 +19,7 @@ export class UserRegisterDto {
   @IsNotEmpty()
   @IsString()
   @Trim()
-  readonly password: string;
+  password: string;
 
   @ApiPropertyOptional()
   @IsOptional()
