@@ -3,6 +3,9 @@ import { UserRegisterDto } from './dtos/user-register.dto';
 import { UserRepository } from './user.repository';
 import { UserEntity } from './user.entity';
 import { SuccessResponseDto } from '../../Commons/Responses/Swagger-response-dtos/Common/success-response.dto';
+import * as bcrypt from 'bcrypt';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 @Injectable()
 export class UserService {
@@ -22,6 +25,10 @@ export class UserService {
     if (user) {
       throw new BadRequestException(['Username or Email already exists']);
     }
+
+    const hashedPassword = await bcrypt.hash(userRegisterDto.password, Number(process.env.SALT_ROUNDS));
+    userRegisterDto.password = hashedPassword;
+
     const newUser = this.userRepository.create(userRegisterDto);
     await this.userRepository.save(newUser);
     return new SuccessResponseDto({}, ['Create User Success'], HttpStatus.CREATED);

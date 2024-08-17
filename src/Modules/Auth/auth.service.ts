@@ -5,6 +5,10 @@ import { jwtConstants, REDIS_CLIENT } from '../../Commons/Constants/constants';
 import { UserLoginDto } from './dtos/user-login.dto';
 import { RedisClientType } from 'redis';
 import { SuccessResponseDto } from '../../Commons/Responses/Swagger-response-dtos/Common/success-response.dto';
+import * as bcrypt from 'bcrypt';
+import * as dotenv from 'dotenv';
+dotenv.config();
+
 
 @Injectable()
 export class AuthService {
@@ -16,7 +20,8 @@ export class AuthService {
 
   async validateUser(username: string, password: string) {
     const user = await this.userService.getUserByNameOrEmail(username);
-    if (user && user.password === password) {
+    const checkPassword = await bcrypt.compare(password, user.password);
+    if (user && checkPassword) {
       return {
         id: user.id,
         username: user.username,
