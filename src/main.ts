@@ -3,6 +3,8 @@ import { AppModule } from './app.module';
 import { HttpStatus, ValidationPipe } from '@nestjs/common';
 import { LoggerMiddleware } from './Middlewares/Logging.middleware';
 import { SwaggerModule, DocumentBuilder } from '@nestjs/swagger';
+import { CorsOptions } from '@nestjs/common/interfaces/external/cors-options.interface';
+
 
 
 async function bootstrap() {
@@ -32,6 +34,14 @@ async function bootstrap() {
   SwaggerModule.setup('swagger', app, document);
 
   app.use(new LoggerMiddleware().use);
+
+  const corsOptions: CorsOptions = {
+    origin: true,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
+    credentials: true,
+  };
+  app.enableCors(corsOptions);
+
 
   await app.listen(process.env.PORT);
 }
