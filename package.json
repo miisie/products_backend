@@ -22,7 +22,7 @@
     "migration:generate": "npm run typeorm -- migration:generate -d ormconfig.ts",
     "migration:run": "npm run typeorm -- migration:run -d ormconfig.ts",
     "migration:revert": "npm run typeorm -- migration:revert -d ormconfig.ts",
-    "admin-seed": "npx ts-node database/Seeds/Admin/admin.seed.ts"
+    "admin-seed": "npx ts-node database/seeds/Admin/admin.seed.ts"
 
   },
   "dependencies": {
