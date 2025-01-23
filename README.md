@@ -3,6 +3,10 @@
 ```bash
 $ npm install
 ```
+Auto generate migration
+```bash
+$ make auto-windows name=={file-name}
+```
 ## Create SSL keys
 
 ```bash
